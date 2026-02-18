@@ -1,12 +1,12 @@
 #AI agents that generate code and AI agents that test it - How we use AI at QA.tech
 ## DevQOps Sthlm - February 18
-Everything I am showing you today is available in this Github repo.
 
 ![QR Code](qrcode.png)
 
 ### My name is Olle Pridiuksson - Solutions Engineer at agentic AI startup QA.tech
 Talk to me if you're interested in agentic AI adoption and Quality Assurance strategy for your business.
 
+- Vibe Living vs Agentic Living: [Single link to learn more about me](https://www.linkedin.com/pulse/vibe-living-vs-agentic-olle-pridiuksson-twfzf/)
 - LinkedIn: <https://www.linkedin.com/in/pridiuksson>  
 - Instagram: <https://www.instagram.com/pridiuksson>  
 - Twitter: <https://x.com/pridiuksson>  
