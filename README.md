@@ -97,6 +97,45 @@ Quack (GHA) finishes review
   → E2E runs tests with filters/hints in context
 ```
 
+## E2E QA.tech PR Review Agent
+
+### At a Glance
+
+The e2e agent runs end-to-end tests against PR preview deployments and writes GitHub reviews based solely on test pass/fail. It fetches PR context (diffs, deployments), classifies changes as user-facing or not, selects or creates tests, runs them, and submits a verdict.
+
+```mermaid
+flowchart LR
+    subgraph entry["Entry Points"]
+        A["GitHub webhook<br/>deployment_status / pull_request"]
+        B["@QA.tech mention<br/>in PR comment"]
+    end
+
+    subgraph engine["E2E PR Review Engine"]
+        C1["1) Fetch PR<br/>get-vcs-pull-request<br/>files, diffs, qaTechEnvironmentId"]
+        C2["2) Classify<br/>user-facing vs<br/>docs/infra/build"]
+        C3["3) Scope<br/>description, files, commits<br/>→ core functionality"]
+        C4["4) Assess coverage<br/>get-test-cases<br/>+ optional analyze-site / feature-graph"]
+        C5["5) Create + run<br/>suggest-test-cases for gaps<br/>run-test-cases for existing"]
+        C6["6) Verdict<br/>add-vcs-pull-request-review<br/>approve / decline from test results"]
+        C1 --> C2 --> C3 --> C4 --> C5 --> C6
+    end
+
+    subgraph outputs["Output"]
+        O1["GitHub PR review<br/>✅ pass / ❌ fail / ℹ️ unable to verify"]
+    end
+
+    A --> C1
+    B --> C1
+
+    C6 --> O1
+```
+
+| Path                          | When                                         | Outcome                                                         |
+| ----------------------------- | -------------------------------------------- | --------------------------------------------------------------- |
+| **User-facing + tests exist** | PR changes UI/API; existing tests cover them | Run relevant tests → approve/decline based on pass/fail         |
+| **User-facing + gaps**        | PR changes UI/API; no tests for changed area | Create new tests → run all → approve/decline based on pass/fail |
+| **Non-user-facing**           | Docs, infra, build configs only              | Skip testing → "Unable to verify through end-to-end testing"    |
+| **No deployment**             | No preview URL for PR                        | "Testing blocked" – cannot run without environment              |
 
 
 
